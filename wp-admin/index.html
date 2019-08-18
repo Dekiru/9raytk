@@ -5,19 +5,186 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Log In ‹ 9raytk — WordPress</title>
 	<link rel="dns-prefetch" href="//s.w.org">
+<script type="text/javascript" src="https://dekiru.github.io/9raytk/wp-includes/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="https://dekiru.github.io/9raytk/wp-includes/js/jquery/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){ jQuery( "#pass1" ).data( "reveal", 0 ); });
+</script>
 <link rel="stylesheet" id="dashicons-css" href="https://dekiru.github.io/9raytk/wp-includes/css/dashicons.min.css" type="text/css" media="all">
 <link rel="stylesheet" id="buttons-css" href="https://dekiru.github.io/9raytk/wp-includes/css/buttons.min.css" type="text/css" media="all">
 <link rel="stylesheet" id="forms-css" href="https://dekiru.github.io/9raytk/wp-admin/css/forms.min.css" type="text/css" media="all">
 <link rel="stylesheet" id="l10n-css" href="https://dekiru.github.io/9raytk/wp-admin/css/l10n.min.css" type="text/css" media="all">
 <link rel="stylesheet" id="login-css" href="https://dekiru.github.io/9raytk/wp-admin/css/login.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="buddyboss-theme-login-css" href="https://dekiru.github.io/9raytk/wp-content/themes/buddyboss-theme/assets/css/login.css" type="text/css" media="all">
+<link rel="stylesheet" id="buddyboss-theme-fonts-css" href="https://dekiru.github.io/9raytk/wp-content/themes/buddyboss-theme/assets/fonts/fonts.css" type="text/css" media="all">
 	
 	<meta name="referrer" content="strict-origin-when-cross-origin">
 		<meta name="viewport" content="width=device-width">
-		</head>
-	<body class="login login-action-login wp-core-ui  locale-en-us">
+		<script>
+		jQuery( document ).ready( function () {
+			jQuery( '#loginform label[for="user_login"]' ).attr( 'id', 'user_label' );
+			jQuery( '#loginform label[for="user_pass"]' ).attr( 'id', 'pass_label' );
+			jQuery( '#registerform label[for="user_login"]' ).attr( 'id', 'user_label_register' );
+			jQuery( '#registerform label[for="user_email"]' ).attr( 'id', 'email_label_register' );
+			jQuery( '#lostpasswordform label[for="user_login"]' ).attr( 'id', 'user_label_lost' );
+
+			var $label_user_login = jQuery( 'label#user_label' );
+			$label_user_login.html( $label_user_login.find( 'input' ) );
+
+			var $label_user_pass = jQuery( 'label#pass_label' );
+			$label_user_pass.html( $label_user_pass.find( 'input' ) );
+
+			var $label_user_register = jQuery( 'label#user_label_register' );
+			$label_user_register.html( $label_user_register.find( 'input' ) );
+
+			var $label_email_register = jQuery( 'label#email_label_register' );
+			$label_email_register.html( $label_email_register.find( 'input' ) );
+
+			var $label_user_lost = jQuery( 'label#user_label_lost' );
+			$label_user_lost.html( $label_user_lost.find( 'input' ) );
+
+
+			jQuery( '#loginform #user_login' ).attr( 'placeholder', 'Email Address' );
+			jQuery( '#loginform #user_pass' ).attr( 'placeholder', 'Password' );
+			jQuery( '#registerform #user_login' ).attr( 'placeholder', 'Username' );
+			jQuery( '#registerform #user_email' ).attr( 'placeholder', 'Email' );
+			jQuery( '#lostpasswordform #user_login' ).attr( 'placeholder', 'Email Address' );
+            jQuery( '#resetpassform #pass1' ).attr( 'placeholder', 'Password: At least 12 characters long' );
+            jQuery( '#resetpassform #bs-pass2' ).attr( 'placeholder', 'Retype new password' );
+
+            jQuery( '.login.bb-login p.message.reset-pass' ).text( "Reset Password" );
+            jQuery( '.login.login-action-lostpassword.bb-login #login > p.message' ).html( '<div>Forgot your password?<p class="message">Enter your email address. You will receive a link to create a new password via email.' );
+
+            jQuery( '.login.login-action-lostpassword.bb-login #lostpasswordform input#wp-submit' ).attr( 'value', 'Request resend link' );
+            jQuery( '.login.login-action-rp.bb-login #resetpassform input#wp-submit' ).attr( 'value', 'Save' );
+            if(!jQuery('#resetpassform').length) {
+                jQuery( '.login.login-action-resetpass.bb-login p#backtoblog' ).prepend( "<span class='bs-pass-update-msg'>Password has been updated" );
+            }
+
+            var $signIn = jQuery( '.login.login-action-lostpassword.bb-login #login > p#nav > a' ).first().addClass('bs-sign-in').text('Back to sign in');
+            jQuery( 'form#lostpasswordform' ).append( $signIn );
+
+			jQuery( '.login #loginform label#pass_label' ).append( "<span class='label-switch'>" );
+
+            var $forgetMeNot = jQuery( '.login.bb-login p.forgetmenot' );
+            var $lostMeNot = jQuery( '.login.bb-login p.lostmenot' );
+            jQuery( $lostMeNot ).before( $forgetMeNot );
+
+			jQuery( document ).on( 'click', '.login .label-switch', function ( e ) {
+				var $this = jQuery( this );
+				var $input = $this.closest( 'label' ).find( 'input#user_pass' );
+				$this.toggleClass( "bb-eye" );
+				if ( $this.hasClass( 'bb-eye' ) ) {
+					$input.attr( "type", "text" );
+				} else {
+					$input.attr( "type", "password" );
+				}
+			} );
+
+            var signinCheckboxes = function() {
+                // Checkbox Styling
+                jQuery('input[type=checkbox]#rememberme').each(function() {
+                    var $this = jQuery(this);
+                    $this.addClass('checkbox');
+                    jQuery('<span class="checkbox">').insertAfter($this);
+                    if ($this.is(':checked')) {
+                        $this.next('span.checkbox').addClass('on');
+                    };
+                    $this.fadeTo(0,0);
+                    $this.change(function(){
+                        $this.next('span.checkbox').toggleClass('on');
+                    });
+                });
+            };
+            signinCheckboxes();
+
+            var loginLogoImage = function() {
+                jQuery('.login.bb-login #login > h1 > a').each(function() {
+                    var $this = jQuery(this);
+                    var bg = $this.css('background-image');
+                    bgLogo = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+                    $this.append( '<img class="bs-cs-login-logo" src="' + bgLogo + '" />' );                 });
+            };
+
+            var loginLogoTitle = function() {
+                jQuery('.login.bb-login #login > h1 > a').each(function() {
+                    var $this = jQuery(this);
+	                $this.addClass('bb-login-title').append( '<span class="bs-cs-login-title">9raytk' );
+                });
+            };
+                            loginLogoTitle();
+            
+            var loginHeight = function() {
+
+                jQuery( 'body.login.login-split-page #login' ).each(function() {
+                    var $loginH = jQuery( 'body.login.login-split-page #login' ).height();
+                    var $winH = jQuery( window ).height();
+
+                    if ( $loginH > $winH ) {
+                        jQuery( 'body.login.login-split-page' ).addClass('login-exh');
+                    } else {
+                        jQuery( 'body.login.login-split-page' ).removeClass('login-exh');
+                    }
+                });
+            };
+            loginHeight();
+            jQuery( window ).on( 'resize', function () {
+                loginHeight();
+            } );
+
+		} )
+	</script>
+	<style>			body.login {
+                background-color: #FAFBFD;
+			}
+						body.login #login,
+            body.login p.forgetmenot label {
+                color: #122B46;
+			}
+			            body.login .login-popup.bb-modal {
+    			color: #4D5C6D;
+    		}
+                        body.login .login-popup.bb-modal h1 {
+    			color: #122B46;
+    		}
+            			body.login .login-heading a,
+            .login h1 a.bb-login-title,
+            .login form .lostmenot a,
+            .login a.privacy-policy-link,
+            form#lostpasswordform a.bs-sign-in {
+                color: #007CFF;
+			}
+			.login.wp-core-ui .button-primary {
+                background-color: #007CFF;
+                border-color: #007CFF;
+			}
+						body.login .login-heading a:hover,
+            .login h1 a.bb-login-title:hover,
+            .login form .lostmenot a:hover,
+            .login a.privacy-policy-link:hover,
+            form#lostpasswordform a.bs-sign-in:hover {
+                color: #0070e6;
+			}
+			.login.wp-core-ui .button-primary:hover {
+                background-color: #0070e6;
+                border-color: #0070e6;
+			}
+			            @media( min-width: 992px ) {
+                body.login.login-split-page .login-split .split-overlay {
+                    opacity: 0.3;
+    			}
+            }
+			            @media( min-width: 992px ) {
+                body.login.login-split-page .login-split div {
+                    color: #FFFFFF;
+    			}
+            }
+			</style>	</head>
+	<body class="login login-action-login wp-core-ui  locale-en-us bb-login">
 		<div id="login">
-		<h1><a href="https://wordpress.org/">Powered by WordPress</a></h1>
-	
+		<h1><a href="https://dekiru.github.io/9raytk"></a></h1>
+	<div class="login-heading"><h2>Sign in</h2></div>
+
 	<form name="loginform" id="loginform" action="https://dekiru.github.io/9raytk/wp-login.php" method="post">
 	<p>
 		<label for="user_login">Username or Email Address<br>
@@ -27,7 +194,8 @@
 		<label for="user_pass">Password<br>
 		<input type="password" name="pwd" id="user_pass" class="input" value="" size="20"></label>
 	</p>
-			<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever"> Remember Me</label></p>
+					<p class="lostmenot"><a href="https://dekiru.github.io/9raytk/wp-login.php">Forgot Password?</a></p>
+				<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever"> Remember Me</label></p>
 	<p class="submit">
 		<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="Log In">
 				<input type="hidden" name="redirect_to" value="https://dekiru.github.io/9raytk/wp-admin/">
@@ -59,9 +227,6 @@
 	</div>
 
 	
-		<script>
-	/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())},!1);
-	</script>
 		<div class="clear"></div>
 	</body>
 	</html>
